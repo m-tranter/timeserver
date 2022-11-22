@@ -20,7 +20,6 @@ app.listen(port, () => {
 });
 
 // Start Prometheus
-
 const metrics = promBundle({
   includeMethod: true,
   includePath: true,
@@ -38,13 +37,13 @@ const metrics = promBundle({
 // Middleware
 app.use(express.json());
 app.use(cors());
-app.use(metrics);
 app.use(function (req, res, next) {
   if (req.headers.authorization !== auth) {
     return res.status(403).json({ error: "No credentials sent!" });
   }
   next();
 });
+app.use(metrics);
 
 // Routes
 app.get("/time/", (_, res) => {
